@@ -1,4 +1,4 @@
---Readme document for *author(s)*, *email(s)*, *UCI id(s)*--
+--Readme document for Emery Valencia, emvalenc@uci.edu, 59325878--
 
 1. How long, in hours, did it take you to complete this assignment?
 
