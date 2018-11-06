@@ -27,9 +27,6 @@ function writeTokenFile(callback) {
 
 /*This function does not need to be edited.*/
 function readTokenAndClientSecretFiles(callback) {
-  //This chains two promises together. First, client_secret.json will be read and parsed. Once it completes, tokens.json will be read and parsed.
-  //These files are read synchronously (one after another) intentionally to demonstrate how promises can be chained.
-  //Promise.all() could be used to conduct these two file reads asynchronously, which is more efficient.
   fs.readFile('client_secret.json', (err, data) => {
     data = JSON.parse(data);
     my_client_id = data.client_id;
@@ -43,24 +40,80 @@ function readTokenAndClientSecretFiles(callback) {
   });
 }
 
+//------------------------------------------------------------------------------------------------
+//  Assignment description:
+//  TODO: use fetch() to use the refresh token to get a new access token.
+//  Body and headers arguments will be similar the /callback endpoint.
+//  When the fetch() promise completes, parse the response.
+//  Then, use writeTokenFile() to write the token file. Pass it a callback function for what should
+//  occur once the file is written.
+//------------------------------------------------------------------------------------------------
+//  EV notes: Call is successful but unsure of what to put in "writeTokenFile", callback loops
+//------------------------------------------------------------------------------------------------
 function refresh(callback) {
-  //TODO: use fetch() to use the refresh token to get a new access token.
-  //body and headers arguments will be similar the /callback endpoint.
-  //When the fetch() promise completes, parse the response.
-  //Then, use writeTokenFile() to write the token file. Pass it a callback function for what should occur once the file is written.
+  console.log('In refresh');
+
+  //builds refresh token uri
+  const params = new URLSearchParams();
+  params.append('grant_type', 'refresh_token');
+  params.append('client_id', my_client_id);
+  params.append('client_secret', my_client_secret);
+
+  //requests new token and updates token in tokens.json
+  fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+    .then(async (response) => {
+      const body = await response.json();
+      access_token = body.access_token;
+      writeTokenFile(callback);
+    })
+    .catch((error) => console.log('refresh failed: ', error));
 }
 
+//-----------------------------------------------------------------------------------------------
+//  Assignment description:
+//  TODO: use fetch() to make the API call.
+//  parse the response send it back to the Angular client with res.json()
+//  To make API requests, update the makeAPIRequest function to make a request to the Spotify API.
+//  The variable spotify_base_uri can be used to reference the base component of the URI, and the
+//  spotify_endpoint argument designates the endpoint for the request. The res argument can be used
+//  to return the response as JSON. A list of endpoints which call that function have already been
+//  created. These endpoints will access the desired resources from the spotify API and do not need
+//  to be edited.
+//  Once refresh() is working, check whether the status code is 401 (unauthorized)
+//  If so, refresh the access token and make the API call again.
+//------------------------------------------------------------------------------------------------
+//  EV notes: Makes correct API call with specified endpoints. Working on validating access_token
+//    with refresh(), bit unsure of what "callback" to pass into it
+//------------------------------------------------------------------------------------------------
 function makeAPIRequest(spotify_endpoint, res) {
-  var headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: 'Bearer ' + access_token
-  };
+  console.log('In makeAPIRequest...', spotify_endpoint);
 
-  //TODO: use fetch() to make the API call.
-  //parse the response send it back to the Angular client with res.json()
+  console.log('Old token: ', access_token);
 
-  //Once refresh() is working, check whether the status code is 401 (unauthorized)
-  //If so, refresh the access token and make the API call again.
+  //unsure to what to pass into here
+  //refresh(makeAPIRequest); //--> need to implement method to determine if access_token is invalud
+
+  console.log('New token: ', access_token);
+
+  fetch(spotify_endpoint, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + access_token
+    }
+  })
+    .then(async (response) => {
+      const body = await response.json();
+      console.log(body);
+    })
+    .catch((error) => console.log('makeAPIRequest failed: ', error));
+
+  res.redirect(client_uri); //causes error when refresh is uncommented, probably a refresh problem
 }
 
 /*This function does not need to be edited.*/
@@ -105,30 +158,25 @@ router.get('/callback', function(req, res, next) {
 
   const code = req.query.code || null;
   const params = new URLSearchParams();
-
   params.append('code', code);
   params.append('redirect_uri', redirect_uri);
   params.append('grant_type', 'authorization_code');
 
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization:
-      'Basic ' + Buffer.from(my_client_id + ':' + my_client_secret).toString('base64')
-  };
-
   fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
     method: 'POST',
-    headers: headers
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization:
+        'Basic ' + Buffer.from(my_client_id + ':' + my_client_secret).toString('base64')
+    }
   })
     .then(async (response) => {
       const body = await response.json();
-
       access_token = body.access_token;
       refresh_token = body.refresh_token;
-
       writeTokenFile(next); // <--- next forwards the request
     })
-    .catch((error) => console.log('Request failed: ', error));
+    .catch((error) => console.log('callback failed: ', error));
 
   res.redirect(client_uri);
 });
@@ -136,7 +184,7 @@ router.get('/callback', function(req, res, next) {
 /*This function does not need to be edited.*/
 router.get('/', function(req, res, next) {
   console.log('/');
-  // res.end('Go to the <a href="/login">login page</a> to begin the oAuth flow.');
+  //res.end('Go to the <a href="/login">login page</a> to begin the oAuth flow.');
   res.end();
 });
 
