@@ -126,11 +126,11 @@ router.get('/callback', function(req, res, next) {
       access_token = body.access_token;
       refresh_token = body.refresh_token;
 
-      writeTokenFile(next); // <--- forwards the request
+      writeTokenFile(next); // <--- next forwards the request
     })
     .catch((error) => console.log('Request failed: ', error));
 
-  res.redirect('/');
+  res.redirect(client_uri);
 });
 
 /*This function does not need to be edited.*/

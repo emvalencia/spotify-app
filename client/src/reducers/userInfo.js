@@ -1,7 +1,12 @@
 import { FETCH_USER } from '../actions/types';
 
-export default function(state = null, action = null) {
-  console.log('in auth reducer :', state);
+const defaultState = {
+  name: 'Joe Smuckatelly',
+  id: '1234'
+};
+
+export default function(state = defaultState, action = null) {
+  console.log('in userInfor reducer :', state);
   console.log('action.type :', action);
   switch (action.type) {
     case FETCH_USER:
