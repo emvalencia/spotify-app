@@ -5,12 +5,6 @@ import UserProfile from './UserProfile'; //testing data retrieval
 
 export default class MainPage extends React.Component {
   render() {
-    return (
-      <div>
-        <Header />
-        <NavBar />
-        <UserProfile />
-      </div>
-    );
+    return <div>hello welcome to main page haha!!!!</div>;
   }
 }

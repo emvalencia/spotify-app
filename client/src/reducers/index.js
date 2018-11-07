@@ -4,9 +4,9 @@
 */
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
-import userInfor from './userInfo';
+import userInfo from './userInfo';
 
 export default combineReducers({
   auth: authReducer,
-  userInfor
+  userInfo
 });

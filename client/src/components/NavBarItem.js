@@ -6,7 +6,11 @@ const NavBarItem = (props) => {
 
   console.log('NavBarItem props :', props);
   if (props.link && !containsAuth) {
-    element = <li>{props.title} </li>;
+    element = (
+      <li>
+        <a href={props.link}>{props.title}</a>
+      </li>
+    );
   } else {
     element = (
       <li>

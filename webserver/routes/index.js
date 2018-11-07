@@ -1,3 +1,11 @@
+//------------------------------------------------------------------------------------------------
+// Webserver index.js is responsible for all interactions with the Spotify Server (login,
+// authorization, HTTP requests)
+//------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------
+// Requirements and variables
+//------------------------------------------------------------------------------------------------
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
@@ -9,13 +17,17 @@ const redirect_uri = 'http://localhost:8888/callback';
 const client_uri = 'http://localhost:3000';
 const spotify_base_uri = 'https://api.spotify.com/v1';
 
-//These values will be loaded from client_secret.json
+//these values will be loaded from client_secret.json
 let my_client_id = null;
 let my_client_secret = null;
 
+//these tokens will be stored in tokens.json
 let access_token = null;
 let refresh_token = null;
 
+//------------------------------------------------------------------------------------------------
+// Authorization functions
+//------------------------------------------------------------------------------------------------
 /*This function does not need to be edited.*/
 function writeTokenFile(callback) {
   fs.writeFile(
@@ -40,25 +52,12 @@ function readTokenAndClientSecretFiles(callback) {
   });
 }
 
-//------------------------------------------------------------------------------------------------
-//  Assignment description:
-//  TODO: use fetch() to use the refresh token to get a new access token.
-//  Body and headers arguments will be similar the /callback endpoint.
-//  When the fetch() promise completes, parse the response.
-//  Then, use writeTokenFile() to write the token file. Pass it a callback function for what should
-//  occur once the file is written.
-//------------------------------------------------------------------------------------------------
-//  EV notes: Call is successful but unsure of what to put in "writeTokenFile", callback loops
-//------------------------------------------------------------------------------------------------
+//Refreshes access_tokens as needed by using the original refresh_token
 function refresh(callback) {
-  console.log('In refresh');
-
   //builds refresh token uri
   const params = new URLSearchParams();
   params.append('grant_type', 'refresh_token');
   params.append('refresh_token', refresh_token);
-  // params.append('client_id', my_client_id);
-  // params.append('client_secret', my_client_secret);
 
   //requests new token and updates token in tokens.json
   fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
@@ -71,58 +70,34 @@ function refresh(callback) {
   })
     .then(async (response) => {
       const body = await response.json();
-
-      console.log('refresh body :', body);
       access_token = body.access_token;
-      // EMERY MAYBE WE NEED TO REWRITE THE REFRESH TOKEN TOO? just asking.
       writeTokenFile(callback);
     })
     .catch((error) => console.log('refresh failed: ', error));
 }
 
-//-----------------------------------------------------------------------------------------------
-//  Assignment description:
-//  TODO: use fetch() to make the API call.
-//  parse the response send it back to the Angular client with res.json()
-//  To make API requests, update the makeAPIRequest function to make a request to the Spotify API.
-//  The variable spotify_base_uri can be used to reference the base component of the URI, and the
-//  spotify_endpoint argument designates the endpoint for the request. The res argument can be used
-//  to return the response as JSON. A list of endpoints which call that function have already been
-//  created. These endpoints will access the desired resources from the spotify API and do not need
-//  to be edited.
-//  Once refresh() is working, check whether the status code is 401 (unauthorized)
-//  If so, refresh the access token and make the API call again.
-//------------------------------------------------------------------------------------------------
-//  EV notes: Makes correct API call with specified endpoints. Working on validating access_token
-//    with refresh(), bit unsure of what "callback" to pass into it
-//------------------------------------------------------------------------------------------------
+//Makes API requests to the Spotify Server and returns a response
 async function makeAPIRequest(spotify_endpoint, res) {
-  console.log('In makeAPIRequest...', spotify_endpoint);
+  //checks if access_token is invalid and refreshes it
+  refresh(() => {});
 
-  console.log('Old token: ', access_token);
-
-  //unsure to what to pass into here
-  refresh(() => {}); //--> need to implement method to determine if access_token is invalud
-
-  console.log('New token: ', access_token);
-
+  //captures API request response
   const response = await fetch(spotify_endpoint, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + access_token
     }
-  });
+  }).catch((error) => console.log('makeAPIRequest failed: ', error));
 
   const body = await response.json();
+  console.log(body);
   res.send(body); //causes error when refresh is uncommented, probably a refresh problem
 }
 
 /*This function does not need to be edited.*/
 router.get('*', function(req, res, next) {
-  console.log('*');
-
-  //Applies to all endpoints: load the token and client secret files if they haven't been loaded.
+  //Applies to all endpoints: load the token and client secret files if they haven't been loaded
   if (!loadedFiles) {
     readTokenAndClientSecretFiles(function() {
       loadedFiles = true;
@@ -133,12 +108,11 @@ router.get('*', function(req, res, next) {
   }
 });
 
+//Re-routes to the Spotify authentication page and prompts user for login info
 router.get('/login', function(req, res, next) {
-  console.log('/login');
-
   var scopes = 'user-read-private user-read-email';
 
-  //TODO: use res.redirect() to send the user to Spotify's authentication page.
+  //redirects user to Spotify login page
   res.redirect(
     'https://accounts.spotify.com/authorize' +
       '?response_type=code' +
@@ -151,19 +125,17 @@ router.get('/login', function(req, res, next) {
   );
 });
 
-//TODO: use fetch() to exchange the code for an access token and refresh token.
-//When the fetch() promise completes, parse the response.
-//Then, use writeTokenFile() to write the token file. Pass it a callback function for what should occur once the file is written.
-//Once the token is written, redirect the user back to the Angular client with res.redirect().
+//Exchanges a code for access and refresh_tokens for login process
 router.get('/callback', function(req, res, next) {
-  console.log('/callback');
-
   const code = req.query.code || null;
+
+  //builds authorization url
   const params = new URLSearchParams();
   params.append('code', code);
   params.append('redirect_uri', redirect_uri);
   params.append('grant_type', 'authorization_code');
 
+  //sends request to retrieve access and refresh tokens and writes them to file
   fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
     method: 'POST',
     headers: {
@@ -183,11 +155,12 @@ router.get('/callback', function(req, res, next) {
   res.redirect(client_uri);
 });
 
+//------------------------------------------------------------------------------------------------
+// API endpoints/queries
+//------------------------------------------------------------------------------------------------
 /*This function does not need to be edited.*/
 router.get('/', function(req, res, next) {
-  console.log('/');
-  //res.end('Go to the <a href="/login">login page</a> to begin the oAuth flow.');
-  res.end();
+  res.redirect(client_uri); //redirects to the client at localhost:3000
 });
 
 /*This function does not need to be edited.*/
@@ -197,7 +170,6 @@ router.get('/me', function(req, res, next) {
 
 /*This function does not need to be edited.*/
 router.get('/search/:category/:resource', function(req, res, next) {
-  console.log('/search/:category/:resource');
   var resource = req.params.resource;
   var category = req.params.category;
   var params = new URLSearchParams();
@@ -244,14 +216,12 @@ router.get('/album-tracks/:id', function(req, res, next) {
 
 /*This function does not need to be edited.*/
 router.get('/track/:id', function(req, res, next) {
-  console.log('');
   var id = req.params.id;
   makeAPIRequest(spotify_base_uri + '/tracks/' + id, res);
 });
 
 /*This function does not need to be edited.*/
 router.get('/track-audio-features/:id', function(req, res, next) {
-  console.log('/track-audio-features/:id');
   var id = req.params.id;
   makeAPIRequest(spotify_base_uri + '/audio-features/' + id, res);
 });
