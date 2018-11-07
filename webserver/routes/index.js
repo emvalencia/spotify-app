@@ -56,19 +56,25 @@ function refresh(callback) {
   //builds refresh token uri
   const params = new URLSearchParams();
   params.append('grant_type', 'refresh_token');
-  params.append('client_id', my_client_id);
-  params.append('client_secret', my_client_secret);
+  params.append('refresh_token', refresh_token);
+  // params.append('client_id', my_client_id);
+  // params.append('client_secret', my_client_secret);
 
   //requests new token and updates token in tokens.json
   fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization:
+        'Basic ' + Buffer.from(my_client_id + ':' + my_client_secret).toString('base64')
     }
   })
     .then(async (response) => {
       const body = await response.json();
+
+      console.log('refresh body :', body);
       access_token = body.access_token;
+      // EMERY MAYBE WE NEED TO REWRITE THE REFRESH TOKEN TOO? just asking.
       writeTokenFile(callback);
     })
     .catch((error) => console.log('refresh failed: ', error));
@@ -90,30 +96,26 @@ function refresh(callback) {
 //  EV notes: Makes correct API call with specified endpoints. Working on validating access_token
 //    with refresh(), bit unsure of what "callback" to pass into it
 //------------------------------------------------------------------------------------------------
-function makeAPIRequest(spotify_endpoint, res) {
+async function makeAPIRequest(spotify_endpoint, res) {
   console.log('In makeAPIRequest...', spotify_endpoint);
 
   console.log('Old token: ', access_token);
 
   //unsure to what to pass into here
-  //refresh(makeAPIRequest); //--> need to implement method to determine if access_token is invalud
+  refresh(() => {}); //--> need to implement method to determine if access_token is invalud
 
   console.log('New token: ', access_token);
 
-  fetch(spotify_endpoint, {
+  const response = await fetch(spotify_endpoint, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + access_token
     }
-  })
-    .then(async (response) => {
-      const body = await response.json();
-      console.log(body);
-    })
-    .catch((error) => console.log('makeAPIRequest failed: ', error));
+  });
 
-  res.redirect(client_uri); //causes error when refresh is uncommented, probably a refresh problem
+  const body = await response.json();
+  res.send(body); //causes error when refresh is uncommented, probably a refresh problem
 }
 
 /*This function does not need to be edited.*/
