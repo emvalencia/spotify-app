@@ -1,5 +1,5 @@
 //should be called when '/me' is requested
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import './About.css';
 
@@ -18,27 +18,30 @@ class About extends React.Component {
   };
 
   render() {
-    console.log('About this.props :', this.props);
-
-    console.log('here', this.state);
-
     const { displayName } = this.props.userData;
     const { externalURL } = this.props.userData;
 
-    console.log('externalURL: ', externalURL);
-    console.log('state', this.state);
-    return (
-      <div className="col-6">
-        <button class="btn btn-light" onClick={this.toggle}>
-          Load info about me
-        </button>
+    let elements = (
+      <Fragment>
         <h3>Logged In User: {displayName} </h3>
         <img src={this.props.userData.imageURL} alt="" />
         <p>
-          <a href={externalURL} className="btn btn-dark" target="_blank">
+          <a href={externalURL} className="btn btn-light" target="_blank">
             Open profile on Spotify
           </a>
         </p>
+      </Fragment>
+    );
+
+    const { toggleInfo } = this.state;
+    const buttonText = !toggleInfo ? 'Load Info About Me' : 'Hide Info';
+
+    return (
+      <div className="col-6">
+        <button className="btn btn-light" onClick={this.toggle}>
+          {buttonText}
+        </button>
+        {toggleInfo ? elements : null}
       </div>
     );
   }

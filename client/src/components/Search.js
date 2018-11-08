@@ -1,5 +1,4 @@
-{
-  /* <h1>Search Spotify</h1>
+/* <h1>Search Spotify</h1>
 <!--TODO: bind input's model to searchString-->
 <input>
 <!--TODO: bind select's model to searchCategory-->
@@ -11,4 +10,64 @@
 <button class="btn btn-light">Search</button>
 <!--TODO: Display a carousel component if searching for an artist or album. Bind carousel's resources and give it a static carouselId.-->
 <!--TODO: Display a track-list component if searching for a track. Bind track-list's tracks.--> */
+//should be called when '/me' is requested
+import React, { Component } from 'react';
+import './Search.css';
+import Carousel from './Carousel';
+
+class Search extends Component {
+  state = {
+    inputValue: '',
+    optionValue: 'artist',
+    searchResults: []
+  };
+
+  handleInput = (event) => {
+    console.log('event :', event);
+    this.setState({ ...this.state, inputValue: event.target.value });
+  };
+
+  handleOption = (event) => {
+    console.log('target value', event.target.value);
+    this.setState({ ...this.state, optionValue: event.target.value });
+  };
+
+  handleSubmit = async (event) => {
+    console.log('handling submit');
+    ///album/:id
+    //${this.optionValue}/${this.inputValue}
+    const response = await fetch(
+      `http://localhost:8888/search/${this.state.optionValue}/${this.state.inputValue}` //inputValue --> spotifyId
+    );
+    const body = await response.json();
+    console.log('handleSubmit body', body);
+  };
+
+  render() {
+    return (
+      <div className="col-6">
+        <h3>Search Spotify</h3>
+        <div className="row">
+          <span>
+            <input
+              placeholder="Search for Spotify Stuff"
+              value={this.state.inputValue}
+              onChange={this.handleInput}
+            />
+          </span>
+          <select value={this.state.value} onChange={this.handleOption}>
+            <option value="artist">artist</option>
+            <option value="track">track</option>
+            <option value="album">album</option>
+          </select>
+          <button className="btn btn-light" onClick={this.handleSubmit}>
+            Search
+          </button>
+        </div>
+        <Carousel payload={this.state.searchResults} />
+      </div>
+    );
+  }
 }
+
+export default Search;

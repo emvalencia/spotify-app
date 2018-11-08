@@ -7,3 +7,14 @@
 // 	<h5>???</h5>
 // </div>
 // </a>
+import React from 'react';
+
+export default class CarouselCard extends React.Component {
+  render() {
+    return (
+      <div className="carousel-item active">
+        <img className="d-block w-100" src="..." alt="First slide" />
+      </div>
+    );
+  }
+}

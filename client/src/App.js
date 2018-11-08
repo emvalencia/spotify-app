@@ -15,19 +15,21 @@ class App extends Component {
 
   render() {
     return (
-      <main className="container-fluid">
+      <Fragment>
         <NavBar />
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/me" component={About} />
-            {/* <Route path="/get-involved" component={GetInvolved} />
+        <main className="container-fluid">
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/me" component={About} />
+              {/* <Route path="/get-involved" component={GetInvolved} />
             <Route path="/resources" component={Resources} />
             <Route path="/contact" component={Contact} /> */}
-            <Redirect to="/" />
-          </Switch>
-        </BrowserRouter>
-      </main>
+              <Redirect to="/" />
+            </Switch>
+          </BrowserRouter>
+        </main>
+      </Fragment>
     );
   }
 }

@@ -22,10 +22,10 @@ class NavBar extends Component {
     }
 
     return (
-      <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item navbar-brand">
-            <a class="navbar-brand" href="/">
+      <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item navbar-brand">
+            <a className="navbar-brand" href="/">
               Browsing spotify
             </a>
           </li>

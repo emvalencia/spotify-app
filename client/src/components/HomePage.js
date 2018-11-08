@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import About from './About'; //testing data retrieval
+import About from './About';
+import Search from './Search';
 
 export default class MainPage extends Component {
   render() {
     return (
-      <div class="row">
+      <div className="row">
         <About />
-        <About />
+        <Search />
       </div>
     );
   }
