@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './About.css';
 
-class UserProfile extends React.Component {
+class About extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -18,7 +18,6 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    console.log('before props');
     console.log('About this.props :', this.props);
 
     console.log('here', this.state);
@@ -36,7 +35,7 @@ class UserProfile extends React.Component {
         <h3>Logged In User: {displayName} </h3>
         <img src={this.props.userData.imageURL} alt="" />
         <p>
-          <a href={externalURL} class="btn btn-dark" target="_blank">
+          <a href={externalURL} className="btn btn-dark" target="_blank">
             Open profile on Spotify
           </a>
         </p>
@@ -51,4 +50,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps)(About);
