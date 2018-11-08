@@ -32,9 +32,7 @@ class NavBar extends Component {
           </a>
 
           <ul className="right hide-on-med-and-down">
-            <NavBarItem title="Me" link="/me" />
-            <NavBarItem title="link 2" link="someLink2" />
-            <NavBarItem title="link 2" link="someLink3" />
+            <NavBarItem title="About Me" link="/me" />
             {auth !== null && (
               <NavBarItem title={loginHandlerTitle} link={loginHandlerLink} />
             )}

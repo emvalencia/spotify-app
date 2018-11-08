@@ -2,7 +2,8 @@ import { FETCH_USER } from '../actions/types';
 
 const defaultState = {
   displayName: '',
-  imageURL: ''
+  imageURL: '',
+  externalURL: ''
 };
 
 export default function(state = defaultState, action = null) {
@@ -12,8 +13,10 @@ export default function(state = defaultState, action = null) {
     case FETCH_USER: {
       const newState = { ...state };
 
-      if (action.payload.images) newState.imageURL = action.payload.images[0].url; //should set to ternary expression
-      if (action.payload.display_name) newState.displayName = action.payload.display_name; //should set to ternary expression
+      //should set to ternary expressions
+      if (action.payload.images) newState.imageURL = action.payload.images[0].url; 
+      if (action.payload.display_name) newState.displayName = action.payload.display_name; 
+      if (action.payload.external_urls) newState.externalURL = action.payload.external_urls.spotify; 
 
       console.log('new state', newState);
       return newState || false;
