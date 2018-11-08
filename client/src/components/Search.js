@@ -14,6 +14,7 @@
 import React, { Component } from 'react';
 import './Search.css';
 import Carousel from './Carousel';
+import TrackList from './TrackList';
 
 class Search extends Component {
   state = {
@@ -53,7 +54,7 @@ class Search extends Component {
 
     if (submit && renderCarousel)
       searchResultElement = <Carousel payload={this.state.searchResults} />;
-    else if (submit) searchResultElement = <div>render track list</div>;
+    else if (submit) searchResultElement = <TrackList payload={this.state.searchResults} />;
 
     return (
       <div className="col-6">
