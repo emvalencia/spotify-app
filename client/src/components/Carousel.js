@@ -4,15 +4,28 @@ import CarouselCard from './CarouselCard';
 export default class Carousel extends React.Component {
   render() {
     console.log('Carousel this.props :', this.props);
+    const { artists } = this.props.payload;
+    const { albums } = this.props.payload;
+    console.log('artists :', artists);
+    console.log('albums :', albums);
+
+    let arrayOfCards = null;
+    if (artists)
+      arrayOfCards = artists.items.map((artist) => {
+        const imageInfo = artist.images ? artist.images[1] : '';
+        const id = artist.id ? artist.id : '';
+        console.log('imageInfo :', imageInfo);
+        console.log('id :', id);
+        return <CarouselCard imageInfo={imageInfo} key={id} />;
+      });
+
     return (
-      <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-        <div className="carousel-inner">
-          <CarouselCard />
-        </div>
+      <div id="myCarousel" className="carousel slide" data-ride="carousel">
+        <div className="carousel-inner">{arrayOfCards}</div>
 
         <a
           className="carousel-control-prev"
-          href="#carouselExampleControls"
+          href="#myCarousel"
           role="button"
           data-slide="prev"
         >
@@ -21,7 +34,7 @@ export default class Carousel extends React.Component {
         </a>
         <a
           className="carousel-control-next"
-          href="#carouselExampleControls"
+          href="#myCarousel"
           role="button"
           data-slide="next"
         >

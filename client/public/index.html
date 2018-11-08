@@ -56,77 +56,37 @@
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       You can add webfonts, meta tags, or analytics to this file.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       The build step will place the bundled scripts into the <body> tag.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       To begin the development, run `npm start` or `yarn start`.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      console.log('in index.html :');
+      $(document).ready(function(){
+    // Activate Carousel
+    $("#myCarousel").carousel();
+    
+    // Enable Carousel Indicators
+    $(".item1").click(function(){
+        $("#myCarousel").carousel(0);
+    });
+    $(".item2").click(function(){
+        $("#myCarousel").carousel(1);
+    });
+    $(".item3").click(function(){
+        $("#myCarousel").carousel(2);
+    });
+    
+    // Enable Carousel Controls
+    $(".carousel-control-prev").click(function(){
+        $("#myCarousel").carousel("prev");
+    });
+    $(".carousel-control-next").click(function(){
+        $("#myCarousel").carousel("next");
+    });
+});
+    </script>
   </body>
 </html>
 </html>

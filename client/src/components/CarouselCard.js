@@ -11,9 +11,12 @@ import React from 'react';
 
 export default class CarouselCard extends React.Component {
   render() {
+    console.log('CarouselCard props :', this.props);
+    const { url } = this.props.imageInfo ? this.props.imageInfo : '';
+    console.log('CarouselCard imageURL :', url);
     return (
       <div className="carousel-item active">
-        <img className="d-block w-100" src="..." alt="First slide" />
+        <img className="d-block w-100" src={url} alt="album or artist" />
       </div>
     );
   }

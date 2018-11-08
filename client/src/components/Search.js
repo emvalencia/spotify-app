@@ -19,17 +19,16 @@ class Search extends Component {
   state = {
     inputValue: '',
     optionValue: 'artist',
+    submit: false,
     searchResults: []
   };
 
   handleInput = (event) => {
-    console.log('event :', event);
-    this.setState({ ...this.state, inputValue: event.target.value });
+    this.setState({ ...this.state, inputValue: event.target.value, submit: false });
   };
 
   handleOption = (event) => {
-    console.log('target value', event.target.value);
-    this.setState({ ...this.state, optionValue: event.target.value });
+    this.setState({ ...this.state, optionValue: event.target.value, submit: false });
   };
 
   handleSubmit = async (event) => {
@@ -41,9 +40,21 @@ class Search extends Component {
     );
     const body = await response.json();
     console.log('handleSubmit body', body);
+    this.setState({ ...this.state, searchResults: body, submit: true });
   };
 
   render() {
+    const { submit } = this.state;
+    const { optionValue } = this.state;
+    const renderCarousel =
+      optionValue === 'artist' || optionValue === 'album' ? true : false;
+
+    let searchResultElement = null;
+
+    if (submit && renderCarousel)
+      searchResultElement = <Carousel payload={this.state.searchResults} />;
+    else if (submit) searchResultElement = <div>render track list</div>;
+
     return (
       <div className="col-6">
         <h3>Search Spotify</h3>
@@ -64,7 +75,8 @@ class Search extends Component {
             Search
           </button>
         </div>
-        <Carousel payload={this.state.searchResults} />
+
+        {searchResultElement}
       </div>
     );
   }
