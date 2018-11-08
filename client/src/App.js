@@ -3,8 +3,8 @@ import { connect } from 'react-redux'; // allows components to call action creat
 import * as actions from './actions/index'; // import all action creators
 import './App.css';
 //import NavBar from './components/NavBar';
-import MainPage from './components/MainPage';
-import UserProfile from './components/UserProfile';
+import HomePage from './components/HomePage';
+import About from './components/About';
 import NavBar from './components/NavBar';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
@@ -15,21 +15,19 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <main className="container-fluid">
+        <NavBar />
         <BrowserRouter>
-          <div>
-            <NavBar />
-            <Switch>
-              <Route exact path="/" component={MainPage} />
-              <Route path="/me" component={UserProfile} />
-              {/* <Route path="/get-involved" component={GetInvolved} />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/me" component={About} />
+            {/* <Route path="/get-involved" component={GetInvolved} />
             <Route path="/resources" component={Resources} />
             <Route path="/contact" component={Contact} /> */}
-              <Redirect to="/" />
-            </Switch>
-          </div>
+            <Redirect to="/" />
+          </Switch>
         </BrowserRouter>
-      </div>
+      </main>
     );
   }
 }

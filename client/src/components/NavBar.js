@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavBarItem from './NavBarItem';
+import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
   render() {
@@ -21,23 +22,19 @@ class NavBar extends Component {
     }
 
     return (
-      <nav className="blue-grey darken-3 sticky-menu">
-        <div className="nav-wrapper">
-          <a href="/" className="brand-logo">
-            Spotify App
-          </a>
-
-          <a href="#!" data-target="mobile-demo" className="sidenav-trigger">
-            <i className="material-icons">menu</i>
-          </a>
-
-          <ul className="right hide-on-med-and-down">
-            <NavBarItem title="About Me" link="/me" />
-            {auth !== null && (
-              <NavBarItem title={loginHandlerTitle} link={loginHandlerLink} />
-            )}
-          </ul>
-        </div>
+      <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item navbar-brand">
+            <a class="navbar-brand" href="/">
+              Browsing spotify
+            </a>
+          </li>
+        </ul>
+        <ul className="navbar-nav navbar-right mr-auto">
+          {auth !== null && (
+            <NavBarItem title={loginHandlerTitle} link={loginHandlerLink} />
+          )}
+        </ul>
       </nav>
     );
   }
