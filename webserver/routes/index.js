@@ -120,7 +120,6 @@ router.get('/login', function(req, res, next) {
       my_client_id +
       (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
       '&redirect_uri=' +
-      //Use encodeURIComponent() to make escape necessary characters.
       encodeURIComponent(redirect_uri)
   );
 });
@@ -148,7 +147,7 @@ router.get('/callback', function(req, res, next) {
       const body = await response.json();
       access_token = body.access_token;
       refresh_token = body.refresh_token;
-      writeTokenFile(next); // <--- next forwards the request
+      writeTokenFile(next);
     })
     .catch((error) => console.log('callback failed: ', error));
 

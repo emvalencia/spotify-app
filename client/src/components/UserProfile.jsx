@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 class UserProfile extends React.Component {
   render() {
     console.log('UserProfile this.props :', this.props);
-    const { display_name } = this.props.userData;
-    
-    console.log(display_name);
-    
+    const { displayName } = this.props.userData;
 
-    return <div>{display_name}</div>;
+    return (
+      <div>
+        <img src={this.props.userData.imageURL} alt="" />
+        <p> {displayName} </p>
+      </div>
+    );
   }
 }
 
