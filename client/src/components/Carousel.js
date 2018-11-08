@@ -1,22 +1,47 @@
 import React from 'react';
 import CarouselCard from './CarouselCard';
+import './Carousel.css';
 
 export default class Carousel extends React.Component {
   render() {
     console.log('Carousel this.props :', this.props);
     const { artists } = this.props.payload;
     const { albums } = this.props.payload;
-    console.log('artists :', artists);
-    console.log('albums :', albums);
 
     let arrayOfCards = null;
+
+    // TODO: REFACTOR THIS!!!
     if (artists)
-      arrayOfCards = artists.items.map((artist) => {
-        const imageInfo = artist.images ? artist.images[1] : '';
+      arrayOfCards = artists.items.map((artist, index) => {
+        const imageInfo = artist.images ? artist.images[0] : '';
         const id = artist.id ? artist.id : '';
-        console.log('imageInfo :', imageInfo);
-        console.log('id :', id);
-        return <CarouselCard imageInfo={imageInfo} key={id} />;
+        const name = artist.name ? artist.name : '';
+
+        return (
+          <CarouselCard
+            imageInfo={imageInfo}
+            id={id}
+            key={id}
+            index={index}
+            name={name}
+          />
+        );
+      });
+    else if (albums)
+      arrayOfCards = albums.items.map((album, index) => {
+        const imageInfo = album.images ? album.images[0] : '';
+        const id = album.id ? album.id : '';
+        const name = album.name ? album.name : '';
+
+        return (
+          <CarouselCard
+            imageInfo={imageInfo}
+            id={id}
+            key={id}
+            index={index}
+            name={name}
+          />
+        );
       });
 
     return (
