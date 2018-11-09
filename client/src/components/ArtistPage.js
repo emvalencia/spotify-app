@@ -125,6 +125,12 @@ class ArtistPage extends React.Component {
 
     console.log('trackArray', trackArray);
 
+    const payload = {
+      albums: {
+        items: this.state.albums
+      }
+    };
+
     //contains the elements to be rendered on the homepage
     let elements = (
       <Fragment>
@@ -189,10 +195,11 @@ class ArtistPage extends React.Component {
         <div className="row">
           <div className="col-6">
             <h3>{displayName}'s Albums</h3>
+            <Carousel payload={payload} />
           </div>
           <div className="col-6">
             <h3>Similar Artists</h3>
-            <Carousel payload={this.props} />
+            <Carousel payload={this.props} type={'album'} />
           </div>
         </div>
       </Fragment>
