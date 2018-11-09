@@ -1,3 +1,11 @@
+import React, { Component } from 'react';
+
+export default class ArtistPage extends Component {
+  render() {
+    return <div />;
+  }
+}
+
 {
   /* <div *ngIf="artist" class="row">
 	<div class="col-6">

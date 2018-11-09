@@ -2,7 +2,7 @@
 // The TrackList component handles the display and functionality of the track-list when searching
 // via the main homepage.
 //------------------------------------------------------------------------------------------------
-import React from 'react';
+import React, { Fragment } from 'react';
 //import './TrackList.css';
 
 //converts from ms to min:second format
@@ -12,6 +12,28 @@ export default class TrackList extends React.Component {
     var sec = ((duration_ms % 60000) / 1000).toFixed(0);
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
   };
+
+  searchTrackElement = (track) => (
+    <Fragment>
+      <td>
+        <a href={track[6]} target="_blank">
+          {track[3]}
+        </a>
+      </td>
+      <td>
+        <a href={track[7]} target="_blank">
+          {track[4]}
+        </a>
+      </td>
+    </Fragment>
+  );
+
+  expandedTable = () => (
+    <Fragment>
+      <th scope="col">Primary Artist</th>
+      <th scope="col">Album</th>
+    </Fragment>
+  );
 
   render() {
     console.log('TrackList props: ', this.props);
@@ -31,6 +53,8 @@ export default class TrackList extends React.Component {
       const artist = this.props.payload.tracks.items[i].artists[0].name;
       const artistLink = this.props.payload.tracks.items[i].artists[0].external_urls
         .spotify;
+
+      //links
       const album = this.props.payload.tracks.items[i].album.name;
       const albumLink = this.props.payload.tracks.items[i].album.external_urls.spotify;
       const trackLink = this.props.payload.tracks.items[i].external_urls.spotify;
@@ -64,61 +88,25 @@ export default class TrackList extends React.Component {
               <th scope="col">#</th>
               <th scope="col">Track</th>
               <th scope="col">Duration</th>
-              <th scope="col">Primary Artist</th>
-              <th scope="col">Album</th>
+              {hideAlbum && hideArtist ? null : this.expandedTable()}
             </tr>
           </thead>
           <tbody>
             {trackArray.map((track) => {
               //updates table on main search page
-              if (hideAlbum === false && hideArtist === false) {
-                return (
-                  <tr key={track}>
-                    {' '}
-                    {/*not sure what to put for key for now*/}
-                    <td>{track[0]}</td>
-                    <td>
-                      <a href={track[5]} target="_blank">
-                        {track[1]}
-                      </a>
-                    </td>
-                    <td>{track[2]}</td>
-                    <td>
-                      <a href={track[6]} target="_blank">
-                        {track[3]}
-                      </a>
-                    </td>
-                    <td>
-                      <a href={track[7]} target="_blank">
-                        {track[4]}
-                      </a>
-                    </td>
-                  </tr>
-                );
-              }
-              //hideArtist is true, hides artist only, for artist page
-              else if (hideArtist) {
-                return (
-                  <tr key={track}>
-                    {' '}
-                    <td>{track[0]}</td>
-                    <td>{track[1]}</td>
-                    <td>{track[2]}</td>
-                    <td>{track[4]}</td>
-                  </tr>
-                );
-              }
-              //hideAlbum is true, hides album and artist columns, for album page
-              else {
-                return (
-                  <tr key={track}>
-                    {' '}
-                    <td>{track[0]}</td>
-                    <td>{track[1]}</td>
-                    <td>{track[2]}</td>
-                  </tr>
-                );
-              }
+              return (
+                <tr key={track}>
+                  {/*not sure what to put for key for now*/}
+                  <td>{track[0]}</td>
+                  <td>
+                    <a href={track[5]} target="_blank">
+                      {track[1]}
+                    </a>
+                  </td>
+                  <td>{track[2]}</td>
+                  {hideAlbum && hideArtist ? null : this.searchTrackElement(track)}
+                </tr>
+              );
             })}
           </tbody>
         </table>
