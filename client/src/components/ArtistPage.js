@@ -1,14 +1,20 @@
 import React, { Fragment } from 'react';
-import TrackList from './TrackList';
 import defaultImage from '../assets/unknown.jpeg';
 import './ArtistPage.css';
+import Carousel from './Carousel';
 
 class ArtistPage extends React.Component {
-  state = { displayName: '', imageURL: '', externalURL: '', genres: [], tracks: [] };
-  componentDidMount() {
-    // do fetch with id
-    // then update state
+  state = {
+    displayName: '',
+    imageURL: '',
+    externalURL: '',
+    genres: [],
+    tracks: [],
+    albums: []
+  };
 
+  componentDidMount() {
+    //getes the artist's id to display their homepage and information
     fetch(`http://localhost:8888/artist/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
@@ -30,6 +36,8 @@ class ArtistPage extends React.Component {
         });
       }
     );
+
+    //gets the artist's top tracks to display via track-list
     fetch(`http://localhost:8888/artist-top-tracks/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
@@ -42,7 +50,22 @@ class ArtistPage extends React.Component {
         });
       }
     );
+
+    //gets the artists albums to put into a carousel
+    fetch(`http://localhost:8888/artist-albums/${this.props.match.params.id}`).then(
+      (response) => {
+        const body = response.json().then((parsedBody) => {
+          console.log('artist-albums parsedBody :', parsedBody);
+          this.setState({
+            ...this.state,
+            albums: parsedBody.items
+          });
+        });
+      }
+    );
   }
+
+  //converts ms to the format min:sec
   msToMinSecConversion = (duration_ms) => {
     var min = Math.floor(duration_ms / 60000);
     var sec = ((duration_ms % 60000) / 1000).toFixed(0);
@@ -52,7 +75,8 @@ class ArtistPage extends React.Component {
   render() {
     console.log('ArtistPage this.props', this.props);
     console.log('ArtistPage this.state', this.state);
-    console.log('ArtistPage this.props.match.params.id :', this.props.match.params.id);
+    console.log('ArtistPage this.albums', this.state.albums);
+
     const { displayName } = this.state;
     const { externalURL } = this.state;
     const { genres } = this.state;
@@ -65,8 +89,6 @@ class ArtistPage extends React.Component {
 
     //creates an array of tracks and track information
     let trackArray = [];
-
-    console.log('tracks:', tracks.length);
 
     //REFACTOR THIS
     for (let i = 0; i < tracks.length; i++) {
@@ -170,6 +192,7 @@ class ArtistPage extends React.Component {
           </div>
           <div className="col-6">
             <h3>Similar Artists</h3>
+            <Carousel payload={this.props} />
           </div>
         </div>
       </Fragment>
@@ -180,45 +203,3 @@ class ArtistPage extends React.Component {
 }
 
 export default ArtistPage;
-
-{
-  /* <div *ngIf="artist" class="row">
-	<div class="col-6">
-		<!--TODO: populate with artist name-->
-		<h1></h1>
-		<!--TODO: populate with artist image URL-->
-		<img id="artistImg" src="../../../assets/unknown.jpg">
-		<p>
-			<!--TODO: link to artist page on spotify, display artist name-->
-			<a class="btn btn-light" role="button" target="_blank">Open ??? on Spotify</a>
-		</p>
-	</div>
-	<div class="col-2">
-		<h3>Genres</h3>
-		<ul>
-			<!--TODO: loop over artist's genres and display them-->
-			<li>???</li>
-		</ul>
-		<p>
-		</p>
-	</div>
-	<div class="col-4">
-		<!--TODO: display artist name-->
-		<h3>???'s Top Tracks</h3>
-		<!--TODO: display the track list for the album-->
-	</div>
-</div>
-
-<div *ngIf="artist" class="row">
-	<div class="col-6">
-		<!--TODO: display artist name-->
-		<h3>???'s Albums</h3>
-		<!--TODO: Display a carousel component for the artist's albums. Bind carousel's resources and give it a static carouselId.-->
-	</div>
-	<div class="col-6">
-		<h3>Similar Artists</h3>
-		<!--TODO: Display a carousel component for similar artists. Bind carousel's resources and give it a static carouselId.-->
-	</div>
-
-</div> */
-}
