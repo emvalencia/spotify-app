@@ -4,8 +4,6 @@
   <div class="progress-bar" role="progressbar">???: ???</div>
 </div> 
 
-
-
 import { Component, OnInit } from '@angular/core';
 
 @Component({
