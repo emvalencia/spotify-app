@@ -10,7 +10,8 @@ class ArtistPage extends React.Component {
     externalURL: '',
     genres: [],
     tracks: [],
-    albums: []
+    albums: [],
+    similarArtists: []
   };
 
   componentDidMount() {
@@ -63,6 +64,18 @@ class ArtistPage extends React.Component {
         });
       }
     );
+    //gets the artists albums to put into a carousel
+    fetch(
+      `http://localhost:8888/artist-related-artists/${this.props.match.params.id}`
+    ).then((response) => {
+      const body = response.json().then((parsedBody) => {
+        console.log('artist-related-artists :', parsedBody);
+        this.setState({
+          ...this.state,
+          similarArtists: parsedBody.artists
+        });
+      });
+    });
   }
 
   //converts ms to the format min:sec
@@ -130,6 +143,14 @@ class ArtistPage extends React.Component {
         items: this.state.albums
       }
     };
+
+    const similarArtistsPayload = {
+      artists: {
+        items: this.state.similarArtists
+      }
+    };
+
+    console.log('similarArtistsPayload :', similarArtistsPayload);
 
     //contains the elements to be rendered on the homepage
     let elements = (
@@ -199,7 +220,7 @@ class ArtistPage extends React.Component {
           </div>
           <div className="col-6">
             <h3>Similar Artists</h3>
-            <Carousel payload={this.props} type={'album'} />
+            <Carousel payload={similarArtistsPayload} type="relatedArtist" />
           </div>
         </div>
       </Fragment>

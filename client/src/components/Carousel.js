@@ -14,6 +14,13 @@ export default class Carousel extends React.Component {
     const { albums } = this.props.payload;
 
     let arrayOfCards = null;
+    const cssID = this.props.type ? this.props.type : 'myCarousel';
+    const cssPrevBtn = this.props.type
+      ? 'related-artist-prev carousel-control-prev'
+      : 'carousel-control-prev';
+    const cssNextBtn = this.props.type
+      ? 'related-artist-next carousel-control-next'
+      : 'carousel-control-next';
 
     // TODO: REFACTOR THIS!!!
     if (artists)
@@ -50,24 +57,14 @@ export default class Carousel extends React.Component {
       });
 
     return (
-      <div id="myCarousel" className="carousel slide" data-ride="carousel">
+      <div id={cssID} className="carousel slide" data-ride="carousel">
         <div className="carousel-inner">{arrayOfCards}</div>
 
-        <a
-          className="carousel-control-prev"
-          href="#myCarousel"
-          role="button"
-          data-slide="prev"
-        >
+        <a className={cssPrevBtn} href={'#' + cssID} role="button" data-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true" />
           <span className="sr-only">Previous</span>
         </a>
-        <a
-          className="carousel-control-next"
-          href="#myCarousel"
-          role="button"
-          data-slide="next"
-        >
+        <a className={cssNextBtn} href={'#' + cssID} role="button" data-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true" />
           <span className="sr-only">Next</span>
         </a>
