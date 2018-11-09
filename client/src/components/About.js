@@ -1,9 +1,17 @@
-//should be called when '/me' is requested
+//------------------------------------------------------------------------------------------------
+// The About component displays information about the currently logged in user, such as their 
+// displayName, photo, and a button that opens a new window to their Spotify profile.
+//------------------------------------------------------------------------------------------------
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import './About.css';
 
+//------------------------------------------------------------------------------------------------
+// START class About
+//------------------------------------------------------------------------------------------------
 class About extends React.Component {
+
+  //constructor and state variables
   constructor() {
     super();
     this.state = {
@@ -11,6 +19,7 @@ class About extends React.Component {
     };
   }
 
+  //keeps track of toggled state
   toggle = () => {
     this.setState({
       toggleInfo: !this.state.toggleInfo
@@ -21,6 +30,7 @@ class About extends React.Component {
     const { displayName } = this.props.userData;
     const { externalURL } = this.props.userData;
 
+    //contains the elements to be rendered on the homepage
     let elements = (
       <Fragment>
         <h3>Logged In User: {displayName} </h3>
@@ -33,6 +43,7 @@ class About extends React.Component {
       </Fragment>
     );
 
+    //changes button text depending on toggle state
     const { toggleInfo } = this.state;
     const buttonText = !toggleInfo ? 'Load Info About Me' : 'Hide Info';
 
@@ -46,6 +57,9 @@ class About extends React.Component {
     );
   }
 }
+//------------------------------------------------------------------------------------------------
+// END class About
+//------------------------------------------------------------------------------------------------
 
 const mapStateToProps = (state) => {
   return {
@@ -54,3 +68,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(About);
+
+//------------------------------------------------------------------------------------------------
+// END About component
+//------------------------------------------------------------------------------------------------

@@ -1,7 +1,11 @@
+//------------------------------------------------------------------------------------------------
+// The NavBar component contains the brand and login button that redirects the user to the
+// spotify login page for authentication.
+// ***Logout is not yet implemented.****
+//------------------------------------------------------------------------------------------------
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavBarItem from './NavBarItem';
-import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
   render() {
@@ -26,7 +30,7 @@ class NavBar extends Component {
         <ul className="navbar-nav mr-auto">
           <li className="nav-item navbar-brand">
             <a className="navbar-brand" href="/">
-              Browsing spotify
+              Browsing Spotify
             </a>
           </li>
         </ul>
@@ -46,3 +50,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(NavBar);
+
+//------------------------------------------------------------------------------------------------
+// END NavBar component
+//------------------------------------------------------------------------------------------------

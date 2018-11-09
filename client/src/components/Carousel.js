@@ -1,3 +1,8 @@
+//------------------------------------------------------------------------------------------------
+// The Carousel component implements the functionality to switch between different albums or 
+// artists, depending on the optionValue and searchResults. Each artist/album is shown via a 
+// CarouselCard.
+//------------------------------------------------------------------------------------------------
 import React from 'react';
 import CarouselCard from './CarouselCard';
 import './Carousel.css';
@@ -27,6 +32,7 @@ export default class Carousel extends React.Component {
           />
         );
       });
+      
     else if (albums)
       arrayOfCards = albums.items.map((album, index) => {
         const imageInfo = album.images ? album.images[0] : '';
@@ -70,3 +76,7 @@ export default class Carousel extends React.Component {
     );
   }
 }
+
+//------------------------------------------------------------------------------------------------
+// END Carousel component
+//------------------------------------------------------------------------------------------------

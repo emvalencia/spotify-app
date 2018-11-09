@@ -1,22 +1,15 @@
-/* <h1>Search Spotify</h1>
-<!--TODO: bind input's model to searchString-->
-<input>
-<!--TODO: bind select's model to searchCategory-->
-<select>
-	<!--TODO: loop over searchCategories to create dropdown options-->
-	<!--populate body and text value https://www.w3schools.com/tags/att_option_selected.asp-->
-</select>
-<!--TODO: Call search function when the button is clicked-->
-<button class="btn btn-light">Search</button>
-<!--TODO: Display a carousel component if searching for an artist or album. Bind carousel's resources and give it a static carouselId.-->
-<!--TODO: Display a track-list component if searching for a track. Bind track-list's tracks.--> */
-//should be called when '/me' is requested
+//------------------------------------------------------------------------------------------------
+// The Search component contains a search form that takes in 1) typed user input (what they are
+// searching for), 2) the input type (artist/album/track), and 3) a button that submits this
+// information and calls on the correct component to display (carousel or track-list).
+//------------------------------------------------------------------------------------------------
 import React, { Component } from 'react';
 import './Search.css';
 import Carousel from './Carousel';
 import TrackList from './TrackList';
 
 class Search extends Component {
+  //constructor and state variables
   state = {
     inputValue: '',
     optionValue: 'artist',
@@ -24,37 +17,39 @@ class Search extends Component {
     searchResults: []
   };
 
+  //sets the value of inputValue to be used upon submit
   handleInput = (event) => {
     this.setState({ ...this.state, inputValue: event.target.value, submit: false });
   };
 
+  //sets the value of optionValue to be used upon submit
   handleOption = (event) => {
     this.setState({ ...this.state, optionValue: event.target.value, submit: false });
   };
 
+  //submits search results to the Spotify server and stores them in searchResults
   handleSubmit = async (event) => {
-    console.log('handling submit');
-    ///album/:id
-    //${this.optionValue}/${this.inputValue}
     const response = await fetch(
       `http://localhost:8888/search/${this.state.optionValue}/${this.state.inputValue}` //inputValue --> spotifyId
     );
     const body = await response.json();
-    console.log('handleSubmit body', body);
     this.setState({ ...this.state, searchResults: body, submit: true });
   };
 
   render() {
     const { submit } = this.state;
     const { optionValue } = this.state;
+
     const renderCarousel =
       optionValue === 'artist' || optionValue === 'album' ? true : false;
 
     let searchResultElement = null;
 
+    //chooses correct component to render
     if (submit && renderCarousel)
       searchResultElement = <Carousel payload={this.state.searchResults} />;
-    else if (submit) searchResultElement = <TrackList payload={this.state.searchResults} />;
+    else if (submit)
+      searchResultElement = <TrackList payload={this.state.searchResults} />;
 
     return (
       <div className="col-6">
@@ -76,7 +71,6 @@ class Search extends Component {
             Search
           </button>
         </div>
-
         {searchResultElement}
       </div>
     );
@@ -84,3 +78,7 @@ class Search extends Component {
 }
 
 export default Search;
+
+//------------------------------------------------------------------------------------------------
+// END Search component
+//------------------------------------------------------------------------------------------------

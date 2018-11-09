@@ -1,3 +1,7 @@
+//------------------------------------------------------------------------------------------------
+// The TrackList component handles the display and functionality of the track-list when searching
+// via the main homepage.
+//------------------------------------------------------------------------------------------------
 import React from 'react';
 //import './TrackList.css';
 
@@ -15,6 +19,7 @@ export default class TrackList extends React.Component {
     //creates an array of tracks and track information
     let trackArray = [];
 
+    //REFACTOR THIS
     for (let i = 0; i < 20; i++) {
       //initialize a tempArray to hold each track's info
       let tempArray = [];
@@ -37,7 +42,7 @@ export default class TrackList extends React.Component {
       tempArray.push(artist);
       tempArray.push(album);
 
-      //TESTING: links
+      //links necessary for redirection
       tempArray.push(trackLink); //at track[5]
       tempArray.push(artistLink); //at track[6]
       tempArray.push(albumLink); //at track[7]
@@ -47,7 +52,6 @@ export default class TrackList extends React.Component {
     }
 
     //TODO: Enable toggle to hide artist, album, or both
-    //used to list the tracks of an artist's album once we click on their profile
     let hideArtist = false;
     let hideAlbum = false;
 
@@ -66,8 +70,8 @@ export default class TrackList extends React.Component {
           </thead>
           <tbody>
             {trackArray.map((track) => {
-              //for main search page
-              if (hideAlbum == false && hideArtist == false) {
+              //updates table on main search page
+              if (hideAlbum === false && hideArtist === false) {
                 return (
                   <tr key={track}>
                     {' '}
@@ -122,3 +126,7 @@ export default class TrackList extends React.Component {
     );
   }
 }
+
+//------------------------------------------------------------------------------------------------
+// END TrackList component
+//------------------------------------------------------------------------------------------------
