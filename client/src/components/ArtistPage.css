@@ -1,8 +1,12 @@
 #artistImg {
-	max-width: 100%;
-	max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-app-artist {
-	vertical-align: middle;
+.app-artist {
+  vertical-align: middle;
+}
+
+li {
+  color: white;
 }

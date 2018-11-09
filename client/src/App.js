@@ -6,6 +6,7 @@ import './App.css';
 import HomePage from './components/HomePage';
 import About from './components/About';
 import NavBar from './components/NavBar';
+import ArtistPage from './components/ArtistPage';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 class App extends Component {
@@ -22,9 +23,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route path="/me" component={About} />
-              {/* <Route path="/get-involved" component={GetInvolved} />
-            <Route path="/resources" component={Resources} />
-            <Route path="/contact" component={Contact} /> */}
+              <Route path="/artist/:id" component={ArtistPage} />
               <Redirect to="/" />
             </Switch>
           </BrowserRouter>

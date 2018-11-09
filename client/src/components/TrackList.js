@@ -92,10 +92,10 @@ export default class TrackList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {trackArray.map((track) => {
+            {trackArray.map((track, index) => {
               //updates table on main search page
               return (
-                <tr key={track}>
+                <tr key={index}>
                   {/*not sure what to put for key for now*/}
                   <td>{track[0]}</td>
                   <td>
