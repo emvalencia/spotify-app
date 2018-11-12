@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// The About component displays information about the currently logged in user, such as their 
+// The About component displays information about the currently logged in user, such as their
 // displayName, photo, and a button that opens a new window to their Spotify profile.
 //------------------------------------------------------------------------------------------------
 import React, { Fragment } from 'react';
@@ -10,7 +10,6 @@ import './About.css';
 // START class About
 //------------------------------------------------------------------------------------------------
 class About extends React.Component {
-
   //constructor and state variables
   constructor() {
     super();

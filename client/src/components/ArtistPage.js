@@ -19,8 +19,6 @@ class ArtistPage extends React.Component {
     fetch(`http://localhost:8888/artist/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
-          console.log('artist parsedBody :', parsedBody);
-
           let imageURL = parsedBody.images ? parsedBody.images[0].url : '';
           const { genres } = parsedBody;
 
@@ -42,7 +40,6 @@ class ArtistPage extends React.Component {
     fetch(`http://localhost:8888/artist-top-tracks/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
-          console.log('artist-top-tracks parsedBody :', parsedBody);
           const trackCopy = parsedBody.tracks.concat();
           this.setState({
             ...this.state,
@@ -56,7 +53,6 @@ class ArtistPage extends React.Component {
     fetch(`http://localhost:8888/artist-albums/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
-          console.log('artist-albums parsedBody :', parsedBody);
           this.setState({
             ...this.state,
             albums: parsedBody.items
@@ -69,7 +65,6 @@ class ArtistPage extends React.Component {
       `http://localhost:8888/artist-related-artists/${this.props.match.params.id}`
     ).then((response) => {
       const body = response.json().then((parsedBody) => {
-        console.log('artist-related-artists :', parsedBody);
         this.setState({
           ...this.state,
           similarArtists: parsedBody.artists
@@ -86,10 +81,6 @@ class ArtistPage extends React.Component {
   };
 
   render() {
-    console.log('ArtistPage this.props', this.props);
-    console.log('ArtistPage this.state', this.state);
-    console.log('ArtistPage this.albums', this.state.albums);
-
     const { displayName } = this.state;
     const { externalURL } = this.state;
     const { genres } = this.state;
@@ -136,8 +127,6 @@ class ArtistPage extends React.Component {
       trackArray.push(tempArray);
     }
 
-    console.log('trackArray', trackArray);
-
     const payload = {
       albums: {
         items: this.state.albums
@@ -149,8 +138,6 @@ class ArtistPage extends React.Component {
         items: this.state.similarArtists
       }
     };
-
-    console.log('similarArtistsPayload :', similarArtistsPayload);
 
     //contains the elements to be rendered on the homepage
     let elements = (

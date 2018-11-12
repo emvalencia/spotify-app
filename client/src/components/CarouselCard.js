@@ -9,12 +9,13 @@ export default class CarouselCard extends React.Component {
     let { url } = this.props.imageInfo ? this.props.imageInfo : '';
     const { name } = this.props;
     const { id } = this.props;
+    const { type } = this.props;
 
     if (!url) {
       url = defaultImage;
     }
 
-    const redirectURL = `/artist/${id}`;
+    const redirectURL = `/${type}/${id}`;
 
     if (index === 0)
       return (
@@ -24,7 +25,6 @@ export default class CarouselCard extends React.Component {
           </Link>
           <div className="carousel-caption d-none d-md-block">
             <h5>{name}</h5>
-            <h5>{id}</h5>
           </div>
         </div>
       );
@@ -36,7 +36,6 @@ export default class CarouselCard extends React.Component {
           </Link>
           <div className="carousel-caption d-none d-md-block">
             <h5>{name}</h5>
-            <h5>{id}</h5>
           </div>
         </div>
       );

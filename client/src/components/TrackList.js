@@ -36,8 +36,6 @@ export default class TrackList extends React.Component {
   );
 
   render() {
-    console.log('TrackList props: ', this.props);
-
     //creates an array of tracks and track information
     let trackArray = [];
 

@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import About from './components/About';
 import NavBar from './components/NavBar';
 import ArtistPage from './components/ArtistPage';
+import AlbumPage from './components/AlbumPage';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
               <Route exact path="/" component={HomePage} />
               <Route path="/me" component={About} />
               <Route path="/artist/:id" component={ArtistPage} />
+              <Route path="/album/:id" component={AlbumPage} />
               <Redirect to="/" />
             </Switch>
           </BrowserRouter>

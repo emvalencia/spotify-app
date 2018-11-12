@@ -9,7 +9,6 @@ import NavBarItem from './NavBarItem';
 
 class NavBar extends Component {
   render() {
-    console.log('NavBar this.props :', this.props);
     const { auth } = this.props;
 
     let loginHandlerTitle;
@@ -22,7 +21,6 @@ class NavBar extends Component {
       loginHandlerTitle = 'App Login';
       loginHandlerLink = 'http://localhost:8888/login';
     } else {
-      console.log('login is null, do nothing: ', auth);
     }
 
     return (

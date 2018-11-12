@@ -36,6 +36,7 @@ export default class Carousel extends React.Component {
             key={id}
             index={index}
             name={name}
+            type="artist"
           />
         );
       });
@@ -52,6 +53,7 @@ export default class Carousel extends React.Component {
             key={id}
             index={index}
             name={name}
+            type="album"
           />
         );
       });
