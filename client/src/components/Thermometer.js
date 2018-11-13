@@ -1,3 +1,17 @@
+import React from 'react';
+
+export default class Thermometer extends React.Component {
+  render() {
+    return (
+      <div className="progress">
+        <div className="progress-bar" role="progressbar">
+          stuff!
+        </div>
+      </div>
+    );
+  }
+}
+
 {
   /* <div class="progress">
 	<!--TODO: set style.background-color based on the audio feature's color and width via the audio feature's percent. Display feature name and percent.-->

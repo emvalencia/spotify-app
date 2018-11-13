@@ -101,8 +101,7 @@ class AlbumPage extends React.Component {
             <h3>{displayName} </h3>
             <img id="artistImg" src={this.state.imageURL} alt="" />
             <p>
-              Artist: &nbsp;
-              <Link to={'/artist/' + artistId}>{artist}</Link>
+              Artist: <Link to={'/artist/' + artistId}>{artist}</Link>
             </p>
             <p>
               <a href={externalURL} className="btn btn-light" target="_blank">

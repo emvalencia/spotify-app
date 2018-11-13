@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import defaultImage from '../assets/unknown.jpeg';
 import './ArtistPage.css';
 import Carousel from './Carousel';
+import { Link } from 'react-router-dom';
 
 class ArtistPage extends React.Component {
   state = {
@@ -94,6 +95,8 @@ class ArtistPage extends React.Component {
     //creates an array of tracks and track information
     let trackArray = [];
 
+    console.log('ArtistPage state :', this.state);
+
     //REFACTOR THIS
     for (let i = 0; i < tracks.length; i++) {
       //initialize a tempArray to hold each track's info
@@ -104,12 +107,12 @@ class ArtistPage extends React.Component {
       const { duration_ms } = tracks[i];
       const duration = this.msToMinSecConversion(duration_ms);
       const artist = tracks[i].artists[0].name;
-      const artistLink = tracks[i].artists[0].external_urls.spotify;
+      const artistLink = tracks[i].artists[0].id;
 
       //links
       const album = tracks[i].album.name;
-      const albumLink = tracks[i].album.external_urls.spotify;
-      const trackLink = tracks[i].external_urls.spotify;
+      const albumLink = tracks[i].album.id;
+      const trackId = tracks[i].id;
 
       //push contents of track into the tempArray
       tempArray.push(i + 1); //pushes the number of the track/search number
@@ -118,8 +121,7 @@ class ArtistPage extends React.Component {
       tempArray.push(artist);
       tempArray.push(album);
 
-      //links necessary for redirection
-      tempArray.push(trackLink); //at track[5]
+      tempArray.push(trackId); //at track[5]
       tempArray.push(artistLink); //at track[6]
       tempArray.push(albumLink); //at track[7]
 
@@ -176,22 +178,21 @@ class ArtistPage extends React.Component {
                   //updates table on main search page
                   return (
                     <tr key={index}>
+                      {/* Track number*/}
                       <td>{track[0]}</td>
                       <td>
-                        <a href={track[5]} target="_blank">
-                          {track[1]}
-                        </a>
+                        {/* Track name*/}
+                        <Link to={'/track/' + track[5]}>{track[1]}</Link>
                       </td>
+                      {/* Duration */}
                       <td>{track[2]}</td>
                       <td>
-                        <a href={track[6]} target="_blank">
-                          {track[3]}
-                        </a>
+                        {/* Artist*/}
+                        <Link to={'/artist/' + track[6]}>{track[3]}</Link>
                       </td>
                       <td>
-                        <a href={track[7]} target="_blank">
-                          {track[4]}
-                        </a>
+                        {/* Album*/}
+                        <Link to={'/album/' + track[7]}>{track[4]}</Link>
                       </td>
                     </tr>
                   );
