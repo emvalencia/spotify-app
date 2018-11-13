@@ -38,6 +38,7 @@ class AlbumPage extends React.Component {
       (response) => {
         const body = response.json().then((parsedBody) => {
           const trackCopy = parsedBody.items;
+          console.log('albumpage album-tracks :', trackCopy);
           this.setState({
             ...this.state,
             tracks: trackCopy
@@ -78,7 +79,7 @@ class AlbumPage extends React.Component {
 
       //links
       const albumLink = tracks[i].external_urls.spotify;
-      const trackLink = tracks[i].external_urls.spotify;
+      const trackId = tracks[i].id;
 
       //push contents of track into the tempArray
       tempArray.push(i + 1); //pushes the number of the track/search number
@@ -86,7 +87,7 @@ class AlbumPage extends React.Component {
       tempArray.push(duration);
 
       //links necessary for redirection
-      tempArray.push(trackLink); //at track[3]
+      tempArray.push(trackId); //at track[3]
 
       //add this tracks info to the trackArray
       trackArray.push(tempArray);
@@ -127,9 +128,9 @@ class AlbumPage extends React.Component {
                     <tr key={index}>
                       <td>{track[0]}</td>
                       <td>
-                        <a href={track[3]} target="_blank">
+                        <Link to={'/track/' + track[3]} >
                           {track[1]}
-                        </a>
+                        </Link>
                       </td>
                       <td>{track[2]}</td>
                     </tr>
