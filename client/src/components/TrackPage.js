@@ -4,7 +4,15 @@ import './TrackPage.css';
 import { Link } from 'react-router-dom';
 
 export default class TrackPage extends React.Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    console.log('in constructor :', props);
+    const trackId = this.props.match.params.id;
+    this.state = {
+      trackId: trackId
+    };
+  }
+
   componentDidMount() {
     //gets the album's id to display their homepage and information
     fetch(`http://localhost:8888/track/${this.props.match.params.id}`).then(
@@ -13,6 +21,7 @@ export default class TrackPage extends React.Component {
           console.log('trackInfo parsedBody :', parsedBody);
           this.setState({
             ...this.state,
+            trackId: this.props.match.params.id,
             trackName: parsedBody.name,
             artistName: parsedBody.artists[0].name,
             duration: parsedBody.duration_ms,
@@ -41,6 +50,7 @@ export default class TrackPage extends React.Component {
     const { songLink } = this.state;
     const { albumId } = this.state;
     const { artistId } = this.state;
+    const { trackId } = this.state;
 
     return (
       <div className="row">
@@ -73,7 +83,7 @@ export default class TrackPage extends React.Component {
           </p>
         </div>
         <div className="col-6">
-          <Thermometer />
+          <Thermometer id={trackId} />
         </div>
       </div>
     );
