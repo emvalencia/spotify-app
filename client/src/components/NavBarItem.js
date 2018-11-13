@@ -7,7 +7,6 @@ const NavBarItem = (props) => {
   let element;
   const containsAuth = props.link.includes('login') || props.link.includes('logout');
 
-  console.log('NavBarItem props :', props);
   if (props.link && !containsAuth) {
     element = (
       <li className="nav-item">
@@ -32,5 +31,5 @@ const NavBarItem = (props) => {
 export default NavBarItem;
 
 //------------------------------------------------------------------------------------------------
-// END NavBarItem component 
+// END NavBarItem component
 //------------------------------------------------------------------------------------------------

@@ -12,8 +12,7 @@ export default class Thermometer extends React.Component {
   componentDidMount() {
     fetch(`http://localhost:8888/track-audio-features/${this.state.id}`).then(
       (response) => {
-        const body = response.json().then((parsedBody) => {
-          console.log('track audio features parsedBody :', parsedBody);
+        response.json().then((parsedBody) => {
           const percentMultiplier = 100;
           this.setState({
             ...this.state,
@@ -30,7 +29,6 @@ export default class Thermometer extends React.Component {
     );
   }
   render() {
-    console.log('thermometer state: ', this.state);
 
     //audio feature widths
     const danceabilityWidth = {

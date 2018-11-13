@@ -1,12 +1,17 @@
+//------------------------------------------------------------------------------------------------
+// The TrackPage contains all information about tracks.
+//------------------------------------------------------------------------------------------------
 import React from 'react';
 import Thermometer from './Thermometer';
 import './TrackPage.css';
 import { Link } from 'react-router-dom';
 
+//------------------------------------------------------------------------------------------------
+// Start TrackPage class
+//------------------------------------------------------------------------------------------------
 export default class TrackPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log('in constructor :', props);
     const trackId = this.props.match.params.id;
     this.state = {
       trackId: trackId
@@ -18,7 +23,6 @@ export default class TrackPage extends React.Component {
     fetch(`http://localhost:8888/track/${this.props.match.params.id}`).then(
       (response) => {
         const body = response.json().then((parsedBody) => {
-          console.log('trackInfo parsedBody :', parsedBody);
           this.setState({
             ...this.state,
             trackId: this.props.match.params.id,
@@ -45,7 +49,6 @@ export default class TrackPage extends React.Component {
   };
 
   render() {
-    console.log('TrackPage state: ', this.state);
     let durationConverted = this.msToMinSecConversion(this.state.duration);
     const { songLink } = this.state;
     const { albumId } = this.state;
@@ -89,3 +92,7 @@ export default class TrackPage extends React.Component {
     );
   }
 }
+
+//------------------------------------------------------------------------------------------------
+// END TrackPage component
+//------------------------------------------------------------------------------------------------

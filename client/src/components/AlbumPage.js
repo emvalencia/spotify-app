@@ -38,7 +38,6 @@ class AlbumPage extends React.Component {
       (response) => {
         const body = response.json().then((parsedBody) => {
           const trackCopy = parsedBody.items;
-          console.log('albumpage album-tracks :', trackCopy);
           this.setState({
             ...this.state,
             tracks: trackCopy
@@ -128,9 +127,7 @@ class AlbumPage extends React.Component {
                     <tr key={index}>
                       <td>{track[0]}</td>
                       <td>
-                        <Link to={'/track/' + track[3]} >
-                          {track[1]}
-                        </Link>
+                        <Link to={'/track/' + track[3]}>{track[1]}</Link>
                       </td>
                       <td>{track[2]}</td>
                     </tr>

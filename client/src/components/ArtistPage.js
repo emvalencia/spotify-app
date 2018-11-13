@@ -95,8 +95,6 @@ class ArtistPage extends React.Component {
     //creates an array of tracks and track information
     let trackArray = [];
 
-    console.log('ArtistPage state :', this.state);
-
     //REFACTOR THIS
     for (let i = 0; i < tracks.length; i++) {
       //initialize a tempArray to hold each track's info

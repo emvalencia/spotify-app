@@ -3,7 +3,7 @@
 // via the main homepage.
 //------------------------------------------------------------------------------------------------
 import React, { Fragment } from 'react';
-//import './TrackList.css';
+import { Link } from 'react-router-dom';
 
 //converts from ms to min:second format
 export default class TrackList extends React.Component {
@@ -16,14 +16,10 @@ export default class TrackList extends React.Component {
   searchTrackElement = (track) => (
     <Fragment>
       <td>
-        <a href={track[6]} target="_blank">
-          {track[3]}
-        </a>
+        <Link to={'/artist/' + track[6]}>{track[3]}</Link>
       </td>
       <td>
-        <a href={track[7]} target="_blank">
-          {track[4]}
-        </a>
+        <Link to={'/album/' + track[7]}>{track[4]}</Link>
       </td>
     </Fragment>
   );
@@ -49,13 +45,12 @@ export default class TrackList extends React.Component {
       const { duration_ms } = this.props.payload.tracks.items[i];
       const duration = this.msToMinSecConversion(duration_ms);
       const artist = this.props.payload.tracks.items[i].artists[0].name;
-      const artistLink = this.props.payload.tracks.items[i].artists[0].external_urls
-        .spotify;
+      const artistId = this.props.payload.tracks.items[i].artists[0].id;
 
       //links
       const album = this.props.payload.tracks.items[i].album.name;
-      const albumLink = this.props.payload.tracks.items[i].album.external_urls.spotify;
-      const trackLink = this.props.payload.tracks.items[i].external_urls.spotify;
+      const albumId = this.props.payload.tracks.items[i].album.id;
+      const trackId = this.props.payload.tracks.items[i].id;
 
       //push contents of track into the tempArray
       tempArray.push(i + 1); //pushes the number of the track/search number
@@ -65,9 +60,9 @@ export default class TrackList extends React.Component {
       tempArray.push(album);
 
       //links necessary for redirection
-      tempArray.push(trackLink); //at track[5]
-      tempArray.push(artistLink); //at track[6]
-      tempArray.push(albumLink); //at track[7]
+      tempArray.push(trackId); //at track[5]
+      tempArray.push(artistId); //at track[6]
+      tempArray.push(albumId); //at track[7]
 
       //add this tracks info to the trackArray
       trackArray.push(tempArray);
@@ -94,12 +89,9 @@ export default class TrackList extends React.Component {
               //updates table on main search page
               return (
                 <tr key={index}>
-                  {/*not sure what to put for key for now*/}
                   <td>{track[0]}</td>
                   <td>
-                    <a href={track[5]} target="_blank">
-                      {track[1]}
-                    </a>
+                    <Link to={'/track/' + track[5]}>{track[1]}</Link>
                   </td>
                   <td>{track[2]}</td>
                   {hideAlbum && hideArtist ? null : this.searchTrackElement(track)}

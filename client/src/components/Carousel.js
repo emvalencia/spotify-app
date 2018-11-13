@@ -9,7 +9,6 @@ import './Carousel.css';
 
 export default class Carousel extends React.Component {
   render() {
-    console.log('Carousel this.props :', this.props);
     const { artists } = this.props.payload;
     const { albums } = this.props.payload;
 
