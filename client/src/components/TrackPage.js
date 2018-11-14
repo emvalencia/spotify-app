@@ -36,22 +36,6 @@ export default class TrackPage extends React.Component {
     );
   }
 
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
-  //'/track-audio-features/:id
-
   //converts ms to the format min:sec
   msToMinSecConversion = (duration_ms) => {
     var min = Math.floor(duration_ms / 60000);
