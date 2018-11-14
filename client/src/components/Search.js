@@ -54,7 +54,7 @@ class Search extends Component {
       this.setState({ submit: false });
     }
 
-    console.log('componentType :', componentType);
+    // console.log('componentType :', componentType);
     const renderCarousel =
       optionValue === 'artist' || optionValue === 'album' ? true : false;
 

@@ -4,7 +4,7 @@ import defaultImage from '../assets/unknown.jpeg';
 
 export default class CarouselCard extends React.Component {
   render() {
-    console.log('CarouselCard props :', this.props);
+    // console.log('CarouselCard props :', this.props);
     const { index } = this.props;
     let { url } = this.props.imageInfo ? this.props.imageInfo : '';
     const { name } = this.props;

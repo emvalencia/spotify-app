@@ -15,7 +15,75 @@ class ArtistPage extends React.Component {
     similarArtists: []
   };
 
+  componentWillReceiveProps(nextProps) {
+    // console.log('componentWillReceive Props :', this.props);
+    if (nextProps.match.params.id !== this.props.match.params.id) {
+      // console.log('componentWillReceive nextProps :', nextProps);
+
+      this.setState({});
+
+      //getes the artist's id to display their homepage and information
+      fetch(`http://localhost:8888/artist/${nextProps.match.params.id}`).then(
+        (response) => {
+          const body = response.json().then((parsedBody) => {
+            let imageURL = parsedBody.images ? parsedBody.images[0].url : '';
+            const { genres } = parsedBody;
+
+            if (!imageURL) {
+              imageURL = defaultImage;
+            }
+
+            this.setState({
+              displayName: parsedBody.name,
+              imageURL: imageURL,
+              externalURL: parsedBody.external_urls.spotify,
+              genres: genres
+            });
+          });
+        }
+      );
+
+      //gets the artist's top tracks to display via track-list
+      fetch(`http://localhost:8888/artist-top-tracks/${nextProps.match.params.id}`).then(
+        (response) => {
+          const body = response.json().then((parsedBody) => {
+            const trackCopy = parsedBody.tracks.concat();
+            this.setState({
+              ...this.state,
+              tracks: trackCopy
+            });
+          });
+        }
+      );
+
+      //gets the artists albums to put into a carousel
+      fetch(`http://localhost:8888/artist-albums/${nextProps.match.params.id}`).then(
+        (response) => {
+          const body = response.json().then((parsedBody) => {
+            this.setState({
+              ...this.state,
+              albums: parsedBody.items
+            });
+          });
+        }
+      );
+
+      //gets the related artist to put into a carousel
+      fetch(
+        `http://localhost:8888/artist-related-artists/${nextProps.match.params.id}`
+      ).then((response) => {
+        const body = response.json().then((parsedBody) => {
+          this.setState({
+            ...this.state,
+            similarArtists: parsedBody.artists
+          });
+        });
+      });
+    }
+  }
+
   componentDidMount() {
+    // console.log('componentDidMount :');
     //getes the artist's id to display their homepage and information
     fetch(`http://localhost:8888/artist/${this.props.match.params.id}`).then(
       (response) => {
@@ -61,7 +129,8 @@ class ArtistPage extends React.Component {
         });
       }
     );
-    //gets the artists albums to put into a carousel
+
+    //gets the related artist to put into a carousel
     fetch(
       `http://localhost:8888/artist-related-artists/${this.props.match.params.id}`
     ).then((response) => {
